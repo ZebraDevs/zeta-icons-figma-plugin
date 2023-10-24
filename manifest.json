@@ -1,0 +1,13 @@
+{
+  "name": "Zeta Icon Validator",
+  "id": "1288473441490176463",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "capabilities": ["inspect"],
+  "enableProposedApi": false,
+  "editorType": ["figma", "dev"],
+  "ui": "ui.html",
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  }
+}

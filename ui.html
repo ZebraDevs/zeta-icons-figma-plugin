@@ -6,45 +6,70 @@
 
     li {
       margin-top: 8px;
-      background-color: blue;
     }
 
     .header {
-      background-color: black;
-      color: red;
+      color: #007aba;
     }
   }
 </style>
 
 <body>
   <h2 class="header">Zeta Icon Validator</h2>
-  <h3 id="severe-heading">Invalid Icon Names</h3>
-  <h3 id="renamed-heading">Renamed Icons</h3>
-  <div id="end"></div>
+  <div id="content"></div>
 </body>
 
 
 <script>
-
+  const contentElementId = 'content';
+  
   onmessage = (event) => {
-    const renamedHeading = document.getElementById('renamed-heading');
-    const errors = event.data.pluginMessage;
+    if (event.data.pluginMessage == 'clear') {
+      document.getElementById(contentElementId).innerHTML = ''     
+    } else {  
+      const errors = event.data.pluginMessage;
 
-    const severeErrors = errors.filter((error) => error.severity == 2);
-    for (const error of severeErrors){
-      const listItem = document.createElement("li");
-      listItem.appendChild(document.createTextNode(error.message))
-      document.body.insertBefore(listItem, renamedHeading);
-    }
-
-    const end = document.getElementById('end');
-    const renameErrors = errors.filter((error) => error.severity == 1);
-    for (const error of renameErrors){
-      const listItem = document.createElement("li");
-      listItem.appendChild(document.createTextNode(error.message))
-      document.body.insertBefore(listItem, end);
+      const errorContent = document.getElementById(contentElementId);
+      
+      if (errors.length == 0) {
+        const validMessage = document.createElement('p');
+        validMessage.textContent = 'All icon names are valid!'
+        errorContent.appendChild(validMessage);
+      } else {      
+        const severeErrors = errors.filter((error) => error.severity == 2);
+        const renameErrors = errors.filter((error) => error.severity == 1);
+        
+        if(severeErrors.length > 0) {
+          errorContent.appendChild(createHeading('Invalid Icons'));
+        }
+        
+        for (const error of severeErrors){
+          errorContent.appendChild(createErrorElement(error));
+        }
+        
+        if(renameErrors.length > 0) {
+          errorContent.appendChild(createHeading('Renamed Icons'));
+        }
+        
+        for (const error of renameErrors){
+          errorContent.appendChild(createErrorElement(error));
+        }
+      }
     }
   }
+  
+  function createErrorElement(error) {
+    const listItem = document.createElement("li");
+    listItem.appendChild(document.createTextNode(error.message));
 
-  </script>
+    return listItem;
+  }
+
+  function createHeading(message) {
+    const heading = document.createElement("h3");
+    heading.textContent = message;
+
+    return heading;
+  }
+</script>
   

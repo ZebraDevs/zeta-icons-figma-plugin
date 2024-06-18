@@ -17,6 +17,6 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "zeta-icon-name-checker": "^0.0.36"
+    "zeta-icon-name-checker": "^0.0.15"
   }
 }

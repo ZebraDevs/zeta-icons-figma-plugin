@@ -1,7 +1,7 @@
 {
   "name": "zeta_icon_validator",
-  "version": "1.0.0",
-  "description": "Your Figma Plugin",
+  "version": "1.1.0",
+  "description": "Zeta Icon Validator",
   "main": "code.js",
   "scripts": {
     "build": "webpack",
@@ -10,13 +10,13 @@
   "author": "",
   "license": "",
   "devDependencies": {
-    "@figma/plugin-typings": "^1.78.0",
+    "@figma/plugin-typings": "^1.107.0-beta.1",
     "ts-loader": "^9.5.0",
     "typescript": "^5.2.2",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "zeta-icon-name-checker": "^0.0.15"
+    "@zebra-fed/zeta-icon-validator": "^0.1.4"
   }
 }

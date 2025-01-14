@@ -1,16 +1,10 @@
-// This plugin will open a tab that indicates that it will monitor the current
-// selection on the page. It cannot change the document itself.
-
 import {
   ErrorSeverity,
+  validateIcon,
   ZetaIconError,
-  checkIconName,
-} from "zeta-icon-name-checker";
-
-// This file holds the main code for plugins. Code in this file has access to
-// the *figma document* via the figma global object.
-// You can access browser APIs in the <script> tag inside "ui.html" which has a
-// full browser environment (See https://www.figma.com/plugin-docs/how-plugins-run).
+  ZetaIconNameError,
+} from "@zebra-fed/zeta-icon-validator";
+import { IconErrors } from "./types";
 
 // This shows the HTML page in "ui.html".
 figma.showUI(__html__, {
@@ -21,7 +15,7 @@ figma.showUI(__html__, {
 
 // Ensures that the plugin only runs on the valid files and on the valid pages
 const validFileNames = ["Icon Library", "🦓 ZDS - Assets"];
-const validPageNames = ["🦓 Icons", "Icons"];
+const validPageNames = ["🦓 Icons", "Icons", "🦓 Icons (MASTER)"];
 
 // Posts the error of the selected icons to the UI
 figma.on("selectionchange", () => {
@@ -32,13 +26,11 @@ figma.on("selectionchange", () => {
   ) as ComponentSetNode[];
 
   if (icons.length > 0) {
-    const errors: ZetaIconError[] = [];
+    const errors: IconErrors[] = [];
 
     for (const icon of icons) {
-      const iconError = iconErrors.get(icon.id);
-
-      if (iconError != undefined) {
-        errors.push(iconError);
+      if (iconErrors.get(icon.id) !== undefined) {
+        errors.push(iconErrors.get(icon.id)!);
       }
     }
 
@@ -49,8 +41,9 @@ figma.on("selectionchange", () => {
 });
 
 // Stores a map of icon ids to the relevant errors
-const iconErrors: Map<string, ZetaIconError> = new Map();
+const iconErrors: Map<string, IconErrors> = new Map();
 
+// Generate all icon errors when the plugin is ran
 figma.on("run", () => {
   // Stops the plugin from running on other pages and other files
   if (
@@ -80,25 +73,48 @@ figma.on("run", () => {
     let name = icon.name;
     let categoryName = icon.parent?.name;
 
-    const error = checkIconName(name, categoryName, usedIconNames);
-    if (error.severity != ErrorSeverity.none) {
-      iconErrors.set(icon.id, error);
-    }
+    const errors = validateIcon(icon, categoryName, usedIconNames);
 
-    changeBorder(icon, error.severity);
+    iconErrors.set(icon.id, {
+      name: name,
+      id: icon.id,
+      errors: errors,
+    });
 
-    if (error.newName != undefined) {
-      usedIconNames.push(error.newName);
-    } else {
-      usedIconNames.push(name);
+    let highestSeverity = ErrorSeverity.none;
+
+    for (const error of errors) {
+      if (error.severity > highestSeverity) {
+        highestSeverity = error.severity;
+      }
+
+      if (error instanceof ZetaIconNameError && error.newName != undefined) {
+        usedIconNames.push(error.newName);
+      } else {
+        usedIconNames.push(name);
+      }
     }
+    changeBorder(icon, highestSeverity);
   }
   if (icons.length > 0) {
     figma.ui.postMessage(Array.from(iconErrors.values()));
   }
 });
 
-// Changes the border of a given icon based on the severity of its error
+figma.ui.onmessage = async (message) => {
+  if (message.type === "select-icon") {
+    const nodeToSelect = await figma.getNodeByIdAsync(message.iconId);
+    if (nodeToSelect) {
+      figma.currentPage.selection = [nodeToSelect as SceneNode];
+    }
+  }
+};
+
+/**
+ * Changes the border of a given icon based on the severity of its error
+ * @param element
+ * @param severity
+ */
 function changeBorder(element: ComponentSetNode, severity: ErrorSeverity) {
   let color;
   let strokeWeight = 1;
@@ -137,7 +153,6 @@ const errorBorderColor = {
   g: 0,
   b: 0,
 };
-
 const warningBorderColor = {
   r: 1,
   g: 0.5,

@@ -8,9 +8,14 @@ figma.showUI(__html__, {
   width: 350,
 });
 
+const colorsToConvert = {
+  black: ["#1D1E23"],
+  white: ["#D9D9D9"],
+};
+
 // Ensures that the plugin only runs on the valid files and on the valid pages
 const validFileNames = ["Icon Library", "🦓 ZDS - Assets"];
-const validPageNames = ["🦓 Icons", "Icons", "🦓 Icons - Parent"];
+const validPageNames = ["🦓 Icons", "Icons", "🦓 Icons (MASTER)", "🦓 Icons - Parent"];
 
 // Posts the error of the selected icons to the UI
 figma.on("selectionchange", () => {
@@ -44,6 +49,11 @@ figma.on("run", () => {
     figma.showUI(
       figma.currentPage.name + " " + "   This plugin should only be run within the ZDS - Assets file on the Icons page"
     );
+    // TODO: Revert to this:
+    // if (!validFileNames.includes(figma.root.name) || !validPageNames.includes(figma.currentPage.name)) {
+    //   figma.showUI("This plugin should only be run within the ZDS - Assets file on the Icons page");
+
+    //TODO end revert
     return;
   }
 
@@ -64,7 +74,7 @@ figma.on("run", () => {
     let name = icon.name;
     let categoryName = icon.parent?.name;
 
-    const errors = validateIcon(icon, categoryName, usedIconNames);
+    let errors = validateIcon(icon, categoryName, usedIconNames);
 
     iconErrors.set(icon.id, {
       name: name,
@@ -72,20 +82,65 @@ figma.on("run", () => {
       errors: errors,
     });
 
-    let highestSeverity = ErrorSeverity.none;
+    errors
+      .filter((error) => error.errorType == "ColorError")
+      .forEach((error) => {
+        if (
+          Object.values(colorsToConvert)
+            .flat()
+            .some((color) => error.message.includes(color))
+        ) {
+          changeColor(icon);
+          const errorsToRemoveFromList = errors.filter(
+            (error) =>
+              error.errorType == "ColorError" &&
+              Object.values(colorsToConvert)
+                .flat()
+                .some((color) => error.message.includes(color))
+          );
+          errorsToRemoveFromList.forEach((error) => {
+            errors.splice(errors.indexOf(error), 1);
+          });
+          return;
+        }
+      });
 
     for (const error of errors) {
-      if (error.severity > highestSeverity) {
-        highestSeverity = error.severity;
-      }
-
       if (error instanceof ZetaIconNameError && error.newName != undefined) {
         usedIconNames.push(error.newName);
       } else {
         usedIconNames.push(name);
       }
+
+      if (error.errorType == "LayerError") {
+        for (const roundSharp of icon.children) {
+          const icon = roundSharp as ComponentNode;
+          if (icon.children.length > 1) {
+            figma.flatten(icon.children).name = "Icon";
+          } else {
+            icon.children[0].name = "Icon";
+          }
+          errors.splice(errors.indexOf(error), 1);
+        }
+      }
+
+      if (
+        error.errorType == "BoundingBoxError" &&
+        errors.filter((error) => error.errorType == "IconPartsError").length === 0
+      ) {
+        icon.resize(112, 72);
+        errors.splice(errors.indexOf(error), 1);
+      }
     }
-    changeBorder(icon, highestSeverity);
+
+    if (errors.length !== 0) {
+      changeBorder(
+        icon,
+        errors.reduce((prev, current) => (prev.severity > current.severity ? prev : current)).severity
+      );
+    } else {
+      changeBorder(icon, ErrorSeverity.none);
+    }
   }
   if (icons.length > 0) {
     figma.ui.postMessage(Array.from(iconErrors.values()));
@@ -148,4 +203,60 @@ const warningBorderColor = {
   r: 1,
   g: 0.5,
   b: 0,
+};
+
+/**
+ * Iterates through layers and changes the color of any fills based on [colorsToConvert]
+ * @param node: The node to change the color of
+ */
+const changeColor = (node: any) => {
+  const fills = (node as any).fills;
+  const children = (node as any).children;
+  if (fills) {
+    for (let fill of fills) {
+      if (
+        fill.color &&
+        !(
+          (fill.color.r === 1 && fill.color.g === 1 && fill.color.b === 1) ||
+          (fill.color.r === 0 && fill.color.g === 0 && fill.color.b === 0)
+        )
+      ) {
+        const r = Math.round(fill.color.r * 255);
+        const g = Math.round(fill.color.g * 255);
+        const b = Math.round(fill.color.b * 255);
+
+        const hexColor = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
+        if (hexColor === "#1D1E23") {
+          (node as any).fills = [
+            {
+              blendMode: "NORMAL",
+              color: { r: 0, g: 0, b: 0 },
+              opacity: 1,
+              type: "SOLID",
+              visible: true,
+            },
+          ];
+        } else if (hexColor === "#FFFFFF" || hexColor === "#D9D9D9") {
+          (node as any).fills = [
+            {
+              blendMode: "NORMAL",
+              color: { r: 1, g: 1, b: 1 },
+              opacity: 1,
+              type: "SOLID",
+              visible: true,
+            },
+          ];
+        }
+      }
+    }
+  }
+  try {
+    if (Array.isArray(children) && children.length > 0) {
+      for (const child of children) {
+        changeColor(child);
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
 };

@@ -1,9 +1,4 @@
-import {
-  ErrorSeverity,
-  validateIcon,
-  ZetaIconError,
-  ZetaIconNameError,
-} from "@zebra-fed/zeta-icon-validator";
+import { ErrorSeverity, validateIcon, ZetaIconError, ZetaIconNameError } from "@zebra-fed/zeta-icon-validator";
 import { IconErrors } from "./types";
 
 // This shows the HTML page in "ui.html".
@@ -15,15 +10,13 @@ figma.showUI(__html__, {
 
 // Ensures that the plugin only runs on the valid files and on the valid pages
 const validFileNames = ["Icon Library", "🦓 ZDS - Assets"];
-const validPageNames = ["🦓 Icons", "Icons", "🦓 Icons (MASTER)"];
+const validPageNames = ["🦓 Icons", "Icons", "🦓 Icons - Parent"];
 
 // Posts the error of the selected icons to the UI
 figma.on("selectionchange", () => {
   figma.ui.postMessage("clear");
 
-  const icons = figma.currentPage.selection.filter(
-    (node) => node.type == "COMPONENT_SET"
-  ) as ComponentSetNode[];
+  const icons = figma.currentPage.selection.filter((node) => node.type == "COMPONENT_SET") as ComponentSetNode[];
 
   if (icons.length > 0) {
     const errors: IconErrors[] = [];
@@ -46,12 +39,10 @@ const iconErrors: Map<string, IconErrors> = new Map();
 // Generate all icon errors when the plugin is ran
 figma.on("run", () => {
   // Stops the plugin from running on other pages and other files
-  if (
-    !validFileNames.includes(figma.root.name) ||
-    !validPageNames.includes(figma.currentPage.name)
-  ) {
+  if (!validPageNames.includes(figma.currentPage.name)) {
+    //|| !validFileNames.includes(figma.root.name)) {
     figma.showUI(
-      "This plugin should only be run within the ZDS - Assets file on the Icons page"
+      figma.currentPage.name + " " + "   This plugin should only be run within the ZDS - Assets file on the Icons page"
     );
     return;
   }

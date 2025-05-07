@@ -1,12 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head></head>
+
 <head>
-
-
-  <script src="ui.js"></script>
-</head>
-
-<style>
-  body {
-    margin: 16px;
+  <meta charset="UTF-8">
+  <title>Zeta Icon Validator</title>
+  <style>
+    body {
+      margin: 16px;
+    }
 
     li {
       margin-top: 8px;
@@ -18,92 +21,83 @@
 
     .icon-heading {
       cursor: pointer;
-      color: var(--main-primary);
+      color: var(--border-primary);
     }
-  }
-</style>
+  </style>
+</head>
 
 <body>
   <h2 class="header">Zeta Icon Validator</h2>
-
-
   <div id="content"></div>
-</body>
+  <script>
+    const content = document.getElementById("content");
 
-<script>
+    onmessage = ({ data }) => {
+      if (data.pluginMessage === "clear") {
+        content.innerHTML = "";
+        return;
+      }
 
-  const contentElementId = "content";
-
-  onmessage = (event) => {
-    if (event.data.pluginMessage == "clear") {
-      document.getElementById(contentElementId).innerHTML = "";
-    } else {
-      const iconErrors = event.data.pluginMessage;
-
-      const errorContent = document.getElementById(contentElementId);
-
+      const iconErrors = data.pluginMessage;
+      content.innerHTML = "";
       let hasErrors = false;
-      for (const iconError of iconErrors) {
-        if (iconError.errors && iconError.errors.length > 0) {
+
+      for (const { name, id, errors } of iconErrors) {
+        if (errors?.length) {
           if (!hasErrors) {
-            errorContent.appendChild(createHeading("Please fix the errors below and run the plugin again"));
+            content.appendChild(createHeading("Please fix the errors below and run the plugin again"));
             hasErrors = true;
           }
-          errorContent.appendChild(createIconHeading(iconError.name, iconError.id));
-
-          for (const error of iconError.errors) {
-            errorContent.appendChild(createErrorElement(error));
-          }
+          content.appendChild(createIconHeading(name, id));
+          const ul = document.createElement("ul");
+          errors.forEach(error => ul.appendChild(createErrorElement(error)));
+          content.appendChild(ul);
         }
       }
 
       if (!hasErrors) {
-        errorContent.appendChild(createBody("No errors found"));
-        errorContent.appendChild(createAnimation())
+        content.appendChild(createBody("No errors found"));
+        content.appendChild(createAnimation());
         loadAnimation();
       }
-    }
-  };
-
-  function createErrorElement(error) {
-    const listItem = document.createElement("li");
-    listItem.appendChild(document.createTextNode(error.message));
-
-    return listItem;
-  }
-
-  function createIconHeading(iconName, iconId) {
-    const heading = document.createElement("h3");
-    heading.classList.add("icon-heading");
-    heading.textContent = iconName;
-
-    heading.onclick = () => {
-      parent.postMessage({ pluginMessage: { type: "select-icon", iconId } }, "*");
     };
 
-    return heading;
-  }
+    function createErrorElement(error) {
+      const li = document.createElement("li");
+      li.textContent = error.message;
+      return li;
+    }
 
-  function createHeading(message) {
-    const heading = document.createElement("h3");
-    heading.textContent = message;
+    function createIconHeading(name, iconId) {
+      const h3 = document.createElement("h3");
+      h3.className = "icon-heading";
+      h3.textContent = name;
+      h3.onclick = () => parent.postMessage({ pluginMessage: { type: "select-icon", iconId } }, "*");
+      return h3;
+    }
 
-    return heading;
-  }
-  function createBody(message) {
-    const body = document.createElement("p");
-    body.textContent = message;
+    function createHeading(msg) {
+      const h3 = document.createElement("h3");
+      h3.textContent = msg;
+      return h3;
+    }
 
-    return body;
-  }
-  function createAnimation() {
+    function createBody(msg) {
+      const p = document.createElement("p");
+      p.textContent = msg;
+      return p;
+    }
 
-    const animation = document.createElement('lottie-player');
-    animation.setAttribute('autoplay', '');
-    animation.setAttribute('loop', '');
-    animation.setAttribute('mode', 'normal');
-    animation.setAttribute('style', 'width: calc(100% - 48px); height: 150px; margin: 24px');
+    function createAnimation() {
+      const animation = document.createElement("lottie-player");
+      animation.setAttribute("autoplay", "");
+      animation.setAttribute("loop", "");
+      animation.setAttribute("mode", "normal");
+      animation.setAttribute('style', 'width: calc(100% - 48px); height: 150px; margin: 24px');
 
-    return animation;
-  }
-</script>
+      return animation;
+    }
+  </script>
+</body>
+
+</html>

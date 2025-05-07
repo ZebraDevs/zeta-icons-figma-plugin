@@ -151,23 +151,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lottiefiles/dotlottie-wc@npm:^0.5.3":
-  version: 0.5.3
-  resolution: "@lottiefiles/dotlottie-wc@npm:0.5.3"
-  dependencies:
-    "@lottiefiles/dotlottie-web": "npm:0.44.0"
-    lit: "npm:^3.2.1"
-  checksum: 10c0/265f26cfc856eb2c0e72ee7c7c1a8270df9ede118448417fd7b6d86c451cdf7c16dc34f43f209546a6eca12e8c2ee754345ab4a895cb99ac45bed7414d57294a
-  languageName: node
-  linkType: hard
-
-"@lottiefiles/dotlottie-web@npm:0.44.0":
-  version: 0.44.0
-  resolution: "@lottiefiles/dotlottie-web@npm:0.44.0"
-  checksum: 10c0/b6454236b3310ca46bc9751041dbab29742a6fd45f6e1f3452bca2217f668b91c4d0ebd55bb99ef98a79a8e4bb52db51721f352b8a1c010447152241d0ac974e
-  languageName: node
-  linkType: hard
-
 "@lottiefiles/lottie-player@npm:^2.0.12":
   version: 2.0.12
   resolution: "@lottiefiles/lottie-player@npm:2.0.12"
@@ -496,7 +479,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json-schema@npm:*, @types/json-schema@npm:^7.0.8, @types/json-schema@npm:^7.0.9":
+"@types/json-schema@npm:*, @types/json-schema@npm:^7.0.15, @types/json-schema@npm:^7.0.9":
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
   checksum: 10c0/a996a745e6c5d60292f36731dd41341339d4eeed8180bb09226e5c8d23759067692b1d88e5d91d72ee83dfc00d3aca8e7bd43ea120516c17922cbcb7c3e252db
@@ -1001,12 +984,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zebra-fed/zeta-icon-validator@file:../zeta-icon-validator::locator=zeta_icon_validator%40workspace%3A.":
-  version: 0.1.4
-  resolution: "@zebra-fed/zeta-icon-validator@file:../zeta-icon-validator#../zeta-icon-validator::hash=3053d8&locator=zeta_icon_validator%40workspace%3A."
-  dependencies:
-    typescript: "npm:^5.8.3"
-  checksum: 10c0/43d6573acb85537c7ef112abe794b3cda25683df8999fc9a9219d001100d6b1001e6ccff31c581d932b7ddf1f41397ee1432e0f980e13b6381deff18e23e4433
+"@zebra-fed/zeta-icon-validator@npm:^0.1.5":
+  version: 0.1.5
+  resolution: "@zebra-fed/zeta-icon-validator@npm:0.1.5"
+  checksum: 10c0/97ff3514326de896abf8760b0a1a30c51c6ed8fcc3fdff4ed9d04aa4ab7751f69cf25f4c3148cb0788a6b7494be9b7faee65c870e9483c5f5d3def7e8af7ac01
   languageName: node
   linkType: hard
 
@@ -1071,15 +1052,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv-keywords@npm:^3.5.2":
-  version: 3.5.2
-  resolution: "ajv-keywords@npm:3.5.2"
-  peerDependencies:
-    ajv: ^6.9.1
-  checksum: 10c0/0c57a47cbd656e8cdfd99d7c2264de5868918ffa207c8d7a72a7f63379d4333254b2ba03d69e3c035e996a3fd3eb6d5725d7a1597cca10694296e32510546360
-  languageName: node
-  linkType: hard
-
 "ajv-keywords@npm:^5.1.0":
   version: 5.1.0
   resolution: "ajv-keywords@npm:5.1.0"
@@ -1088,18 +1060,6 @@ __metadata:
   peerDependencies:
     ajv: ^8.8.2
   checksum: 10c0/18bec51f0171b83123ba1d8883c126e60c6f420cef885250898bf77a8d3e65e3bfb9e8564f497e30bdbe762a83e0d144a36931328616a973ee669dc74d4a9590
-  languageName: node
-  linkType: hard
-
-"ajv@npm:^6.12.5":
-  version: 6.12.6
-  resolution: "ajv@npm:6.12.6"
-  dependencies:
-    fast-deep-equal: "npm:^3.1.1"
-    fast-json-stable-stringify: "npm:^2.0.0"
-    json-schema-traverse: "npm:^0.4.1"
-    uri-js: "npm:^4.2.2"
-  checksum: 10c0/41e23642cbe545889245b9d2a45854ebba51cda6c778ebced9649420d9205f2efb39cb43dbc41e358409223b1ea43303ae4839db682c848b891e4811da1a5a71
   languageName: node
   linkType: hard
 
@@ -2157,7 +2117,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-deep-equal@npm:^3.1.1, fast-deep-equal@npm:^3.1.3":
+"fast-deep-equal@npm:^3.1.3":
   version: 3.1.3
   resolution: "fast-deep-equal@npm:3.1.3"
   checksum: 10c0/40dedc862eb8992c54579c66d914635afbec43350afbbe991235fdcb4e3a8d5af1b23ae7e79bef7d4882d0ecee06c3197488026998fb19f72dc95acff1d1b1d0
@@ -2181,13 +2141,6 @@ __metadata:
     merge2: "npm:^1.3.0"
     micromatch: "npm:^4.0.8"
   checksum: 10c0/f6aaa141d0d3384cf73cbcdfc52f475ed293f6d5b65bfc5def368b09163a9f7e5ec2b3014d80f733c405f58e470ee0cc451c2937685045cddcdeaa24199c43fe
-  languageName: node
-  linkType: hard
-
-"fast-json-stable-stringify@npm:^2.0.0":
-  version: 2.1.0
-  resolution: "fast-json-stable-stringify@npm:2.1.0"
-  checksum: 10c0/7f081eb0b8a64e0057b3bb03f974b3ef00135fbf36c1c710895cd9300f13c94ba809bb3a81cf4e1b03f6e5285610a61abbd7602d0652de423144dfee5a389c9b
   languageName: node
   linkType: hard
 
@@ -2897,13 +2850,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-schema-traverse@npm:^0.4.1":
-  version: 0.4.1
-  resolution: "json-schema-traverse@npm:0.4.1"
-  checksum: 10c0/108fa90d4cc6f08243aedc6da16c408daf81793bf903e9fd5ab21983cda433d5d2da49e40711da016289465ec2e62e0324dcdfbc06275a607fe3233fde4942ce
-  languageName: node
-  linkType: hard
-
 "json-schema-traverse@npm:^1.0.0":
   version: 1.0.0
   resolution: "json-schema-traverse@npm:1.0.0"
@@ -3066,7 +3012,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lit@npm:^3.2.0, lit@npm:^3.2.1, lit@npm:^3.3.0":
+"lit@npm:^3.2.0, lit@npm:^3.3.0":
   version: 3.3.0
   resolution: "lit@npm:3.3.0"
   dependencies:
@@ -3739,13 +3685,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"punycode@npm:^2.1.0":
-  version: 2.3.1
-  resolution: "punycode@npm:2.3.1"
-  checksum: 10c0/14f76a8206bc3464f794fb2e3d3cc665ae416c01893ad7a02b23766eb07159144ee612ad67af5e84fa4479ccfe67678c4feb126b0485651b302babf66f04f9e9
-  languageName: node
-  linkType: hard
-
 "puppeteer-core@npm:^24.0.0":
   version: 24.8.1
   resolution: "puppeteer-core@npm:24.8.1"
@@ -3974,18 +3913,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"schema-utils@npm:^3.2.0":
-  version: 3.3.0
-  resolution: "schema-utils@npm:3.3.0"
-  dependencies:
-    "@types/json-schema": "npm:^7.0.8"
-    ajv: "npm:^6.12.5"
-    ajv-keywords: "npm:^3.5.2"
-  checksum: 10c0/fafdbde91ad8aa1316bc543d4b61e65ea86970aebbfb750bfb6d8a6c287a23e415e0e926c2498696b242f63af1aab8e585252637fabe811fd37b604351da6500
-  languageName: node
-  linkType: hard
-
-"schema-utils@npm:^4.0.0":
+"schema-utils@npm:^4.0.0, schema-utils@npm:^4.3.2":
   version: 4.3.2
   resolution: "schema-utils@npm:4.3.2"
   dependencies:
@@ -4278,15 +4206,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"style-loader@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "style-loader@npm:4.0.0"
-  peerDependencies:
-    webpack: ^5.27.0
-  checksum: 10c0/214bc0f3b018f8c374f79b9fa16da43df78c7fef2261e9a99e36c2f8387601fad10ac75a171aa8edba75903db214bc46952ae08b94a1f8544bd146c2c8d07d27
-  languageName: node
-  linkType: hard
-
 "supports-color@npm:^7.1.0":
   version: 7.2.0
   resolution: "supports-color@npm:7.2.0"
@@ -4347,9 +4266,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser-webpack-plugin@npm:^5.3.10":
-  version: 5.3.11
-  resolution: "terser-webpack-plugin@npm:5.3.11"
+"terser-webpack-plugin@npm:^5.3.11":
+  version: 5.3.14
+  resolution: "terser-webpack-plugin@npm:5.3.14"
   dependencies:
     "@jridgewell/trace-mapping": "npm:^0.3.25"
     jest-worker: "npm:^27.4.5"
@@ -4365,7 +4284,7 @@ __metadata:
       optional: true
     uglify-js:
       optional: true
-  checksum: 10c0/4794274f445dc589f4c113c75a55ce51364ccf09bfe8a545cdb462e3f752bf300ea91f072fa28bbed291bbae03274da06fe4eca180e784fb8a43646aa7dbcaef
+  checksum: 10c0/9b060947241af43bd6fd728456f60e646186aef492163672a35ad49be6fbc7f63b54a7356c3f6ff40a8f83f00a977edc26f044b8e106cc611c053c8c0eaf8569
   languageName: node
   linkType: hard
 
@@ -4436,7 +4355,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-loader@npm:^9.5.0":
+"ts-loader@npm:^9.5.2":
   version: 9.5.2
   resolution: "ts-loader@npm:9.5.2"
   dependencies:
@@ -4490,16 +4409,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.2.2":
-  version: 5.7.3
-  resolution: "typescript@npm:5.7.3"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/b7580d716cf1824736cc6e628ab4cd8b51877408ba2be0869d2866da35ef8366dd6ae9eb9d0851470a39be17cbd61df1126f9e211d8799d764ea7431d5435afa
-  languageName: node
-  linkType: hard
-
 "typescript@npm:^5.8.3":
   version: 5.8.3
   resolution: "typescript@npm:5.8.3"
@@ -4507,16 +4416,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/5f8bb01196e542e64d44db3d16ee0e4063ce4f3e3966df6005f2588e86d91c03e1fb131c2581baf0fb65ee79669eea6e161cd448178986587e9f6844446dbb48
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@npm%3A^5.2.2#optional!builtin<compat/typescript>":
-  version: 5.7.3
-  resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5786d5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/6fd7e0ed3bf23a81246878c613423730c40e8bdbfec4c6e4d7bf1b847cbb39076e56ad5f50aa9d7ebd89877999abaee216002d3f2818885e41c907caaa192cc4
   languageName: node
   linkType: hard
 
@@ -4555,15 +4454,6 @@ __metadata:
   bin:
     update-browserslist-db: cli.js
   checksum: 10c0/9cb353998d6d7d6ba1e46b8fa3db888822dd972212da4eda609d185eb5c3557a93fd59780ceb757afd4d84240518df08542736969e6a5d6d6ce2d58e9363aac6
-  languageName: node
-  linkType: hard
-
-"uri-js@npm:^4.2.2":
-  version: 4.4.1
-  resolution: "uri-js@npm:4.4.1"
-  dependencies:
-    punycode: "npm:^2.1.0"
-  checksum: 10c0/4ef57b45aa820d7ac6496e9208559986c665e49447cb072744c13b66925a362d96dd5a46c4530a6b8e203e5db5fe849369444440cb22ecfc26c679359e5dfa3c
   languageName: node
   linkType: hard
 
@@ -4659,12 +4549,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.89.0":
-  version: 5.97.1
-  resolution: "webpack@npm:5.97.1"
+"webpack@npm:^5.99.8":
+  version: 5.99.8
+  resolution: "webpack@npm:5.99.8"
   dependencies:
     "@types/eslint-scope": "npm:^3.7.7"
     "@types/estree": "npm:^1.0.6"
+    "@types/json-schema": "npm:^7.0.15"
     "@webassemblyjs/ast": "npm:^1.14.1"
     "@webassemblyjs/wasm-edit": "npm:^1.14.1"
     "@webassemblyjs/wasm-parser": "npm:^1.14.1"
@@ -4681,9 +4572,9 @@ __metadata:
     loader-runner: "npm:^4.2.0"
     mime-types: "npm:^2.1.27"
     neo-async: "npm:^2.6.2"
-    schema-utils: "npm:^3.2.0"
+    schema-utils: "npm:^4.3.2"
     tapable: "npm:^2.1.1"
-    terser-webpack-plugin: "npm:^5.3.10"
+    terser-webpack-plugin: "npm:^5.3.11"
     watchpack: "npm:^2.4.1"
     webpack-sources: "npm:^3.2.3"
   peerDependenciesMeta:
@@ -4691,7 +4582,7 @@ __metadata:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: 10c0/a12d3dc882ca582075f2c4bd88840be8307427245c90a8a0e0b372d73560df13fcf25a61625c9e7edc964981d16b5a8323640562eb48347cf9dd2f8bd1b39d35
+  checksum: 10c0/c4852c3b795ed3fba799d2925802a4e259b2de7c2c597f0aaf0e228acfdc6755389ed8c29f1dad86610a9c6ad968c0b57c702b93891d60f09d302af63b2debe0
   languageName: node
   linkType: hard
 
@@ -4830,22 +4721,19 @@ __metadata:
   resolution: "zeta_icon_validator@workspace:."
   dependencies:
     "@figma/plugin-typings": "npm:^1.107.0-beta.1"
-    "@lottiefiles/dotlottie-wc": "npm:^0.5.3"
     "@lottiefiles/lottie-player": "npm:^2.0.12"
-    "@zebra-fed/zeta-icon-validator": "file:../zeta-icon-validator"
+    "@zebra-fed/zeta-icon-validator": "npm:^0.1.5"
     "@zebra-fed/zeta-web": "npm:^0.6.1"
     css-loader: "npm:^7.1.2"
     html-inline-css-webpack-plugin: "npm:^1.11.2"
     html-inline-script-webpack-plugin: "npm:^3.2.1"
     html-loader: "npm:^5.1.0"
     html-webpack-plugin: "npm:^5.6.3"
-    lottie-web: "npm:^5.12.2"
     lottie-web-webpack-loader: "npm:^0.0.7"
     mini-css-extract-plugin: "npm:^2.9.2"
-    style-loader: "npm:^4.0.0"
-    ts-loader: "npm:^9.5.0"
-    typescript: "npm:^5.2.2"
-    webpack: "npm:^5.89.0"
+    ts-loader: "npm:^9.5.2"
+    typescript: "npm:^5.8.3"
+    webpack: "npm:^5.99.8"
     webpack-cli: "npm:^5.1.4"
   languageName: unknown
   linkType: soft

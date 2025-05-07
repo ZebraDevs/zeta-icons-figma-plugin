@@ -141,6 +141,12 @@ figma.on("run", () => {
     } else {
       changeBorder(icon, ErrorSeverity.none);
     }
+
+    if (icon?.parent?.name === "DNA") {
+      console.log("Icon is in DNA, and so errors are ignored.");
+      errors = [];
+      iconErrors.set(icon.id, {} as IconErrors);
+    }
   }
   if (icons.length > 0) {
     figma.ui.postMessage(Array.from(iconErrors.values()));

@@ -1,7 +1,11 @@
+<head>
+
+
+  <script src="ui.js"></script>
+</head>
+
 <style>
   body {
-    background-color: var(--figma-color-bg);
-    font-family: Arial, Helvetica, sans-serif;
     margin: 16px;
 
     li {
@@ -9,51 +13,58 @@
     }
 
     .header {
-      color: #007aba;
+      color: var(--main-primary);
     }
 
     .icon-heading {
       cursor: pointer;
-      color: #007aba;
+      color: var(--main-primary);
     }
   }
 </style>
 
 <body>
   <h2 class="header">Zeta Icon Validator</h2>
-  <label>Please fix the errors below and run the plugin again</label>
+
+
   <div id="content"></div>
 </body>
 
-
 <script>
-  const contentElementId = 'content';
-  
+
+  const contentElementId = "content";
+
   onmessage = (event) => {
-    if (event.data.pluginMessage == 'clear') {
-      document.getElementById(contentElementId).innerHTML = ''     
-    } else {  
+    if (event.data.pluginMessage == "clear") {
+      document.getElementById(contentElementId).innerHTML = "";
+    } else {
       const iconErrors = event.data.pluginMessage;
 
       const errorContent = document.getElementById(contentElementId);
-      
+
       let hasErrors = false;
-      for (const iconError of iconErrors){
-        if (iconError.errors.length > 0) {
+      for (const iconError of iconErrors) {
+        if (iconError.errors && iconError.errors.length > 0) {
+          if (!hasErrors) {
+            errorContent.appendChild(createHeading("Please fix the errors below and run the plugin again"));
+            hasErrors = true;
+          }
           errorContent.appendChild(createIconHeading(iconError.name, iconError.id));
-          hasErrors = true;
+
           for (const error of iconError.errors) {
             errorContent.appendChild(createErrorElement(error));
-          }        
+          }
         }
-      }     
+      }
 
       if (!hasErrors) {
-        errorContent.appendChild(createHeading('No errors found'));
+        errorContent.appendChild(createBody("No errors found"));
+        errorContent.appendChild(createAnimation())
+        loadAnimation();
       }
     }
-  }
-  
+  };
+
   function createErrorElement(error) {
     const listItem = document.createElement("li");
     listItem.appendChild(document.createTextNode(error.message));
@@ -63,12 +74,12 @@
 
   function createIconHeading(iconName, iconId) {
     const heading = document.createElement("h3");
-    heading.classList.add('icon-heading');
+    heading.classList.add("icon-heading");
     heading.textContent = iconName;
 
     heading.onclick = () => {
-      parent.postMessage({ pluginMessage: { type: 'select-icon', iconId } }, '*');
-    }
+      parent.postMessage({ pluginMessage: { type: "select-icon", iconId } }, "*");
+    };
 
     return heading;
   }
@@ -79,5 +90,20 @@
 
     return heading;
   }
+  function createBody(message) {
+    const body = document.createElement("p");
+    body.textContent = message;
+
+    return body;
+  }
+  function createAnimation() {
+
+    const animation = document.createElement('lottie-player');
+    animation.setAttribute('autoplay', '');
+    animation.setAttribute('loop', '');
+    animation.setAttribute('mode', 'normal');
+    animation.setAttribute('style', 'width: calc(100% - 48px); height: 150px; margin: 24px');
+
+    return animation;
+  }
 </script>
-  

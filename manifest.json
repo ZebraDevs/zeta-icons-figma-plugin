@@ -12,5 +12,10 @@
     "dev"
   ],
   "ui": "dist/ui.html",
-  "documentAccess": "dynamic-page"
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": [
+      "none"
+    ]
+  }
 }

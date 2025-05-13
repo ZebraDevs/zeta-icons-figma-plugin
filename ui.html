@@ -4,7 +4,7 @@
 <head></head>
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Zeta Icon Validator</title>
   <style>
     body {
@@ -15,43 +15,123 @@
       margin-top: 8px;
     }
 
-    .header {
+    header h2 {
       color: var(--main-primary);
+      margin: 12px 0 0 0;
+    }
+
+    header button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      width: 48px;
+      height: 48px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    header button {
+      border-radius: 360px;
+    }
+
+    header button svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--main-default)
+    }
+
+    header button:hover svg {
+      fill: var(--state-primary-hover);
+    }
+
+    header button:hover {
+      cursor: pointer;
+      background-color: var(--surface-hover);
+
+    }
+
+    header button:active svg {
+      fill: var(--state-primary-selected);
+    }
+
+    header button:active {
+      background-color: var(--surface-selected);
     }
 
     .icon-heading {
       cursor: pointer;
       color: var(--border-primary);
     }
+
+    #content button {
+      background: var(--main-primary);
+      color: var(--main-default);
+      padding: 8px;
+      border-radius: 4px;
+      border: none;
+    }
+
+    #content button:hover {
+      background: var(--state-primary-hover);
+      cursor: pointer;
+    }
+
+    #content button:active {
+      background: var(--state-primary-selected);
+    }
   </style>
 </head>
 
 <body>
-  <h2 class="header">Zeta Icon Validator</h2>
+  <header>
+    <h2>Zeta Icon Validator</h2> <button onclick="parent.postMessage({ pluginMessage: { type: 'reload' } }, '*')"><svg
+        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 1200 1200">
+        <g>
+          <path d=" M600 250V110.5C600 88 573 77 557.5 93l-190 189.5c-10 10-10 25.5 0 35.5L557 507.5c16 15.5 43 4.5
+          43-18V350c186.5 0 334 171 293 364.5A298 298 0 0 1 664.5 943 300.7 300.7 0 0 1 303 692.5a50 50 0 0 0-99 14c31
+          219.5 240 382 476.5 336a399 399 0 0 0 312-312A400.9 400.9 0 0 0 600 250Z" />
+        </g>
+
+      </svg></button>
+  </header>
   <div id="content"></div>
   <script>
     const content = document.getElementById("content");
-
+    console.log('running script')
     onmessage = ({ data }) => {
+      console.log("Received message from plugin:", data.pluginMessage);
       if (data.pluginMessage === "clear") {
         content.innerHTML = "";
-        return;
+        // return;
       }
 
-      const iconErrors = data.pluginMessage;
+      const iconErrors = data.pluginMessage.iconErrors;
+      const layerErrors = data.pluginMessage.layerErrors;
+
       content.innerHTML = "";
       let hasErrors = false;
-
-      for (const { name, id, errors } of iconErrors) {
-        if (errors?.length) {
-          if (!hasErrors) {
-            content.appendChild(createHeading("Please fix the errors below and run the plugin again"));
-            hasErrors = true;
+      if (iconErrors) {
+        for (const { name, id, errors } of iconErrors) {
+          if (errors?.length) {
+            if (!hasErrors) {
+              content.appendChild(createHeading("Please fix the errors below and run the plugin again"));
+              hasErrors = true;
+              if (layerErrors && layerErrors.length > 0) {
+                const button = createLayerButton(layerErrors);
+                content.appendChild(button);
+              }
+            }
+            content.appendChild(createIconHeading(name, id));
+            const ul = document.createElement("ul");
+            errors.forEach((error) => ul.appendChild(createErrorElement(error)));
+            content.appendChild(ul);
           }
-          content.appendChild(createIconHeading(name, id));
-          const ul = document.createElement("ul");
-          errors.forEach(error => ul.appendChild(createErrorElement(error)));
-          content.appendChild(ul);
         }
       }
 
@@ -93,9 +173,19 @@
       animation.setAttribute("autoplay", "");
       animation.setAttribute("loop", "");
       animation.setAttribute("mode", "normal");
-      animation.setAttribute('style', 'width: calc(100% - 48px); height: 150px; margin: 24px');
+      animation.setAttribute("style", "width: calc(100% - 48px); height: 150px; margin: 24px");
 
       return animation;
+    }
+
+    function createLayerButton(layerErrors) {
+      const button = document.createElement("button");
+      button.textContent = "Fix Layer issues";
+      button.onclick = () => {
+        parent.postMessage({ pluginMessage: { type: "fix-layer-issues", layerErrors: layerErrors } }, "*")
+      };
+
+      return button;
     }
   </script>
 </body>

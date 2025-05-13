@@ -14,11 +14,12 @@ const colorsToConvert = {
 };
 
 // Ensures that the plugin only runs on the valid files and on the valid pages
-const validFileNames = ["Icon Library", "🦓 ZDS - Assets"];
-const validPageNames = ["🦓 Icons", "Icons", "🦓 Icons (MASTER)", "🦓 Icons - Parent"];
+const validFileNames = ["Icon Library", "🦓 ZDS - Assets", "IconsTestPage"];
+const validPageNames = ["🦓 Icons", "Icons", "🦓 Icons (MASTER)", "🦓 Icons - Parent", "test"];
 
 // Posts the error of the selected icons to the UI
 figma.on("selectionchange", () => {
+  console.log("Selection changed");
   figma.ui.postMessage("clear");
 
   const icons = figma.currentPage.selection.filter((node) => node.type == "COMPONENT_SET") as ComponentSetNode[];
@@ -32,31 +33,28 @@ figma.on("selectionchange", () => {
       }
     }
 
-    figma.ui.postMessage(errors);
+    figma.ui.postMessage({ iconErrors: errors });
   } else {
-    figma.ui.postMessage(Array.from(iconErrors.values()));
+    figma.ui.postMessage({ iconErrors: Array.from(iconErrors.values()) });
   }
 });
 
 // Stores a map of icon ids to the relevant errors
 const iconErrors: Map<string, IconErrors> = new Map();
+const layerErrors: string[] = [];
 
 // Generate all icon errors when the plugin is ran
 figma.on("run", () => {
   // Stops the plugin from running on other pages and other files
-  if (!validPageNames.includes(figma.currentPage.name)) {
-    //|| !validFileNames.includes(figma.root.name)) {
-    figma.showUI(
-      figma.currentPage.name + " " + "   This plugin should only be run within the ZDS - Assets file on the Icons page"
-    );
-    // TODO: Revert to this:
-    // if (!validFileNames.includes(figma.root.name) || !validPageNames.includes(figma.currentPage.name)) {
-    //   figma.showUI("This plugin should only be run within the ZDS - Assets file on the Icons page");
+  if (!validFileNames.includes(figma.root.name) || !validPageNames.includes(figma.currentPage.name)) {
+    figma.showUI("This plugin should only be run within the ZDS - Assets file on the Icons page");
 
-    //TODO end revert
     return;
   }
+  validateIcons();
+});
 
+const validateIcons = () => {
   // Clear the UI and icon errors
   iconErrors.clear();
   figma.ui.postMessage("clear");
@@ -111,17 +109,8 @@ figma.on("run", () => {
       } else {
         usedIconNames.push(name);
       }
-
       if (error.errorType == "LayerError") {
-        for (const roundSharp of icon.children) {
-          const icon = roundSharp as ComponentNode;
-          if (icon.children.length > 1) {
-            figma.flatten(icon.children).name = "Icon";
-          } else {
-            icon.children[0].name = "Icon";
-          }
-          errors.splice(errors.indexOf(error), 1);
-        }
+        layerErrors.push(icon.id);
       }
 
       if (
@@ -149,12 +138,16 @@ figma.on("run", () => {
     }
   }
   if (icons.length > 0) {
-    figma.ui.postMessage(Array.from(iconErrors.values()));
+    figma.ui.postMessage({ iconErrors: Array.from(iconErrors.values()), icons: icons, layerErrors: layerErrors });
   }
-});
+};
 
 figma.ui.onmessage = async (message) => {
-  if (message.type === "select-icon") {
+  if (message.type === "fix-layer-issues") {
+    fixLayerIssues(message.layerErrors);
+  } else if (message.type === "reload") {
+    validateIcons();
+  } else if (message.type === "select-icon") {
     const nodeToSelect = await figma.getNodeByIdAsync(message.iconId);
     if (nodeToSelect) {
       figma.currentPage.selection = [nodeToSelect as SceneNode];
@@ -265,4 +258,24 @@ const changeColor = (node: any) => {
   } catch (e) {
     console.log(e);
   }
+};
+
+const fixLayerIssues = (layerErrors: string[]) => {
+  const icons2 = figma.currentPage.findAllWithCriteria({
+    types: ["COMPONENT_SET"],
+  });
+
+  layerErrors.forEach((key) => {
+    const icon = icons2.find((icon) => icon.id === key);
+    if (icon && icon.children && icon.children.length == 2) {
+      (icon.children as ComponentSetNode[]).forEach((child: ComponentSetNode) => {
+        if (child.children.length > 1) {
+          figma.flatten(child.children).name = "Icon";
+        } else {
+          child.children[0].name = "Icon";
+        }
+      });
+    }
+    // validateIcons();
+  });
 };

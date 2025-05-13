@@ -33,6 +33,10 @@ module.exports = (env, argv) => ({
         test: /\.json$/,
         include: /(lottie)/,
         loader: 'lottie-web-webpack-loader',
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
       }
     ],
   },

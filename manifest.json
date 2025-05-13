@@ -12,10 +12,5 @@
     "dev"
   ],
   "ui": "dist/ui.html",
-  "documentAccess": "dynamic-page",
-  "networkAccess": {
-    "allowedDomains": [
-      "https://cdn.jsdelivr.net"
-    ]
-  }
+  "documentAccess": "dynamic-page"
 }

@@ -14,8 +14,8 @@ const colorsToConvert = {
 };
 
 // Ensures that the plugin only runs on the valid files and on the valid pages
-const validFileNames = ["Icon Library", "🦓 ZDS - Assets", "IconsTestPage"];
-const validPageNames = ["🦓 Icons", "Icons", "🦓 Icons (MASTER)", "🦓 Icons - Parent", "test"];
+// const validFileNames = ["Icon Library", "🦓 ZDS - Assets", "IconsTestPage"];
+const validPageNames = ["🦓 Icons - Parent", "test"];
 
 // Posts the error of the selected icons to the UI
 figma.on("selectionchange", () => {
@@ -46,7 +46,9 @@ const layerErrors: string[] = [];
 // Generate all icon errors when the plugin is ran
 figma.on("run", () => {
   // Stops the plugin from running on other pages and other files
-  if (!validFileNames.includes(figma.root.name) || !validPageNames.includes(figma.currentPage.name)) {
+  if (!validPageNames.includes(figma.currentPage.name)) {
+    // Removed this check to ensure that the plugin can run on branches
+    // if (!validFileNames.includes(figma.root.name) || !validPageNames.includes(figma.currentPage.name)) {
     figma.showUI("This plugin should only be run within the ZDS - Assets file on the Icons page");
 
     return;

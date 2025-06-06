@@ -15,7 +15,7 @@ const colorsToConvert = {
 
 // Ensures that the plugin only runs on the valid files and on the valid pages
 // const validFileNames = ["Icon Library", "🦓 ZDS - Assets", "IconsTestPage"];
-const validPageNames = ["🦓 Icons - Parent", "test"];
+const validPageNames = ["🦓 All Zebra Icons - Parent", "test"];
 
 // Posts the error of the selected icons to the UI
 figma.on("selectionchange", () => {

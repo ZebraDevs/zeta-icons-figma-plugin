@@ -15,7 +15,7 @@ const colorsToConvert = {
 
 // Ensures that the plugin only runs on the valid files and on the valid pages
 // const validFileNames = ["Icon Library", "🦓 ZDS - Assets", "IconsTestPage"];
-const validPageNames = ["🦓 All Zebra Icons - Parent", "test"];
+const validPageNames = ["🦓 All Zebra Icons", "test"];
 
 // Posts the error of the selected icons to the UI
 figma.on("selectionchange", () => {
@@ -228,6 +228,7 @@ const changeColor = (node: any) => {
 
         const hexColor = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
         if (hexColor === "#1D1E23") {
+          console.log("Changing color to black", hexColor);
           (node as any).fills = [
             {
               blendMode: "NORMAL",
